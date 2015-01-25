@@ -7,4 +7,5 @@ MAINTAINER Yurii Khmelevskii <y@uwinart.com>
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && \
-  apt-get install -yq memcached
+  apt-get install -yq memcached && \
+  apt-get clean
