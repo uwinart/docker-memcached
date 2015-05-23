@@ -42,7 +42,7 @@ ENABLE_MEMCACHED=no
 test -r /etc/default/memcached && . /etc/default/memcached
 
 
-FILES=(/data/www/*/current/memcached-configs/*.conf)
+FILES=(/data/www/*/current/configs/memcached/*.conf)
 # check for alternative config schema
 if [ -r "${FILES[0]}" ]; then
   CONFIGS=()
@@ -52,13 +52,13 @@ if [ -r "${FILES[0]}" ]; then
     NAME=${NAME%.conf}
 
     PATH_NAME=$(dirname "$FILE")
-    DIR_NAME=$(dirname $(dirname $(dirname "$FILE")))
+    DIR_NAME=$(dirname $(dirname $(dirname $(dirname "$FILE"))))
     DIR_NAME=${DIR_NAME#/data/www/}
 
     FULL_NAME="$DIR_NAME:$NAME"
 
     PARAMS=(${2//:/ })
-    PARAM_FILE_NAME="/data/www/${PARAMS[0]}/current/memcached-configs/${PARAMS[1]}.conf"
+    PARAM_FILE_NAME="/data/www/${PARAMS[0]}/current/configs/memcached/${PARAMS[1]}.conf"
 
     # check optional second param
     if [ $# -ne 2 ];
@@ -95,7 +95,7 @@ case "$1" in
   start)
        echo -n "Starting $DESC: "
        if [ $ENABLE_MEMCACHED = yes ]; then
-            start-stop-daemon --start --quiet --exec "$DAEMONBOOTSTRAP" -- /data/www/${SITE_NAME}/current/memcached-configs/${FILE_NAME}.conf $PIDFILE
+            start-stop-daemon --start --quiet --exec "$DAEMONBOOTSTRAP" -- /data/www/${SITE_NAME}/current/configs/memcached/${FILE_NAME}.conf $PIDFILE
             echo "$NAME."
        else
             echo "$NAME disabled in /etc/default/memcached."
@@ -118,7 +118,7 @@ case "$1" in
        start-stop-daemon --stop --quiet --oknodo --retry 5 --pidfile $PIDFILE
        rm -f $PIDFILE
        if [ $ENABLE_MEMCACHED = yes ]; then
-       		start-stop-daemon --start --quiet --exec "$DAEMONBOOTSTRAP" -- /data/www/${SITE_NAME}/current/memcached-configs/${FILE_NAME}.conf $PIDFILE
+       		start-stop-daemon --start --quiet --exec "$DAEMONBOOTSTRAP" -- /data/www/${SITE_NAME}/current/configs/memcached/${FILE_NAME}.conf $PIDFILE
        		echo "$NAME."
        else
             echo "$NAME disabled in /etc/default/memcached."
